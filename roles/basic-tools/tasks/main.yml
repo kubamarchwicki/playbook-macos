@@ -16,8 +16,6 @@
 
 - name: "passff-host for firefox"
   shell: curl -sSL github.com/passff/passff-host/releases/latest/download/install_host_app.sh | bash -s -- firefox    
-  args:    
-    warn: false
 
 - name: Refreshing sudo Cache
   command: "echo none"
@@ -38,15 +36,11 @@
     - gimp
     - signal
     - dropbox
-  notify:
-    - brew cask doctor
 
 - name: Install Inconsolata font
   block:
   - name: "Inconsolata: get the latest version"
     shell: curl -s https://api.github.com/repos/googlefonts/Inconsolata/releases/latest | grep 'tag_name' | cut -d\" -f4
-    args:
-      warn: False
     register: latest_inconsolata_version
     changed_when: false
   - name: "Inconsolata: create ~/Library/Fonts/ subdirectory"
@@ -72,8 +66,6 @@
     register: font_dowload_tempdir
   - name: "Firacode: get the latest version"
     shell: curl -s https://api.github.com/repos/tonsky/FiraCode/releases/latest | grep 'tag_name' | cut -d\" -f4
-    args:
-      warn: False
     register: latest_firacode_version 
     changed_when: false
   - name: "FiraCode: download the font archive to the temporary directory"
@@ -83,8 +75,6 @@
     changed_when: False
   - name: "FiraCode: install font"
     shell: 'unzip -jo "{{ font_dowload_tempdir.path }}/firacode.zip" ttf/* -d ~/Library/Fonts/FiraCode'
-    args:
-      warn: no
   always:
     - name: "FiraCode: clean up the temporary download directory"
       file:
