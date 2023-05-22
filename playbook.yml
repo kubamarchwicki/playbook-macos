@@ -1,0 +1,10 @@
+---
+- hosts: all
+  connection: local
+  pre_tasks:
+    - name: Validate if OSX
+      fail:
+        msg: "Detected an incompatible OS"
+      when: ansible_os_family != 'Darwin'        
+  roles:
+    - shell    
