@@ -7,7 +7,6 @@
         msg: "Detected an incompatible OS"
       when: ansible_os_family != 'Darwin'        
   roles:
-    - prepare-env
     - shell
     - basic-tools
     - devenv

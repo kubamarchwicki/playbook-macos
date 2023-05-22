@@ -48,7 +48,8 @@ fi
 if [[ ! -x /opt/Homebrew/bin ]];
     then
         installing "homebrew"
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"        
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        export PATH="/opt/homebrew/bin:$PATH"
     else
         ok "homebrew"
 fi
@@ -56,8 +57,8 @@ fi
 if [[ ! -x /opt/Homebrew/bin ]];
     then
         installing "homebrew"
-        brew update
-        brew install ansible
+        /opt/Homebrew/bin/brew update
+        /opt/Homebrew/bin/brew install ansible
     else
         ok "ansible"
 fi
