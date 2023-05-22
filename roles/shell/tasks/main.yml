@@ -25,12 +25,17 @@
 
 - name: dotfiles folder
   block:
+  - name: "[dotfiles] exists"
+    stat: 
+      path: "{{ ansible_env.HOME }}/dotfiles"
+    register: dotfiles_exists
   - name: "[dotfiles] download configs"
     git:  
       repo: "git@github.com:kubamarchwicki/dotfiles.git"
       dest: "{{ ansible_env.HOME }}/dotfiles"
       update: yes
       clone: yes
+    when: not dotfiles_exists.stat.exists
   - name: "[dotfiles] links"
     file:
       src: "{{ item.src }}"
