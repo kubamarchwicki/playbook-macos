@@ -11,7 +11,7 @@
     name: "{{ item.name | default(item) }}"
     state: present
   loop: 
-    - aws-cli
+    - awscli
     - vault
     - direnv
     - docker
@@ -26,7 +26,6 @@
     - kubernetes-cli
     - helm
     - k9s
-  ignore_errors: true
 
 - name: Installing [dev] Homebrew Cask Packages
   homebrew_cask:
@@ -38,16 +37,12 @@
   loop: 
     - jetbrains-toolbox
     - visual-studio-code
-  notify:
-    - brew cask doctor
 
 # Easy assume role for AWS
 - name: "Install rapture"
   block:
   - name: "rapture: Get the latest version of rapture"
     shell: curl -s https://api.github.com/repos/daveadams/go-rapture/releases/latest | grep 'tag_name' | cut -d\" -f4 | cut -c 2-
-    args:
-      warn: False
     register: latest_rapture_version
     changed_when: false
   - name: "rapture: download"
@@ -67,10 +62,7 @@
     register: "sdkman_installed"
 
   - name: "sdkman: install"
-    shell: 'curl -s http://get.sdkman.io | bash'
-    args:
-      executable: /bin/bash
-      warn: no
+    shell: curl -sSL https://get.sdkman.io | bash -s
     when: not sdkman_installed.stat.exists
 
   - name: "sdkman: add to .zshrc"
