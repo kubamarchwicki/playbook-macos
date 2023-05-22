@@ -53,6 +53,15 @@ if [[ ! -x /opt/Homebrew/bin ]];
         ok "homebrew"
 fi
 
+if [[ ! -x /opt/Homebrew/bin ]];
+    then
+        installing "homebrew"
+        brew update
+        brew install ansible
+    else
+        ok "ansible"
+fi
+
 
 [[ "$1" = "--local" ]] && echo "Using local copy" || generate_temp_dir
 
