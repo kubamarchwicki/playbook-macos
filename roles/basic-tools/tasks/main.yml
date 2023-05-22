@@ -12,8 +12,7 @@
     - pinentry-mac #prompts you for your passphrase
     - bat
     - youtube-dl
-    - pdftk    
-  ignore_errors: true
+    # - pdftk
 
 - name: "passff-host for firefox"
   shell: curl -sSL github.com/passff/passff-host/releases/latest/download/install_host_app.sh | bash -s -- firefox    
