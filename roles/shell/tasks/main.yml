@@ -1,0 +1,48 @@
+- name: Install zsh
+  lineinfile:
+    backup: yes
+    dest: /etc/shells
+    regexp: ^/usr/local/bin/zsh
+    line: /usr/local/bin/zsh
+  become: true
+
+- name: Setup oh-my-zsh
+  block: 
+  - name: Verify if oh-my-zsh Is Installed
+    stat:
+      path: "~/.oh-my-zsh/"
+    register: "ohmyzsh_installed"
+
+  - name: Install oh-my-zsh
+    shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    args:
+      executable: /bin/bash
+      warn: no
+    when: not ohmyzsh_installed.stat.exists
+
+  - name: Default to zsh
+    user:
+      name: "{{ ansible_env.USER }}"
+      shell: /usr/bin/zsh
+    become: true
+
+- name: dotfiles folder
+  block:
+  - name: "[dotfiles] download configs"
+    git:  
+      repo: "https://github.com/kubamarchwicki/dotfiles.gif"
+      dest: "{{ ansible_env.HOME }}/dotfiles"
+      update: no  
+  - name: "[dotfiles] links"
+    file:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      state: link
+      force: yes
+    loop:
+      - { src: "~/dotfiles/git/gitconfig", dest: "~/.gitconfig"}
+      - { src: "~/dotfiles/git/gitignore_global", dest: "~/.gitignore_global"}
+      - { src: "~/dotfiles/zsh/zshrc_aliases", dest: "~/.zshrc_aliases"}
+      - { src: "~/dotfiles/zsh/zshrc_helpers", dest: "~/.zshrc_helpers"}
+      - { src: "~/dotfiles/zsh/docker_aliases", dest: "~/.docker_aliases"}
+      - { src: "~/dotfiles/zsh/zshrc", dest: "~/.zshrc"}

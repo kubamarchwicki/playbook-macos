@@ -1,0 +1,104 @@
+- name: Create local ~/.bin folder
+  file: 
+    path: "{{ item.path }}"
+    state: directory
+    mode: 0755
+  loop: 
+    - { path: "~/.bin" }
+
+- name: Installing [dev] Homebrew Packages
+  homebrew:
+    name: "{{ item.name | default(item) }}"
+    state: present
+  loop: 
+    - aws-cli
+    - vault
+    - direnv
+    - docker
+    - docker-compose
+    - git
+    - htop
+    - jenv
+    - jq
+    - yq
+    - make
+    - git-delta
+    - kubernetes-cli
+    - helm
+    - k9s
+  ignore_errors: true
+
+- name: Installing [dev] Homebrew Cask Packages
+  homebrew_cask:
+    name: "{{ item.name | default(item) }}"
+    state: present
+    options: "{{ item.install_options | default(omit) }}"
+    accept_external_apps: yes
+  ignore_errors: true
+  loop: 
+    - jetbrains-toolbox
+    - visual-studio-code
+  notify:
+    - brew cask doctor
+
+# Easy assume role for AWS
+- name: "Install rapture"
+  block:
+  - name: "rapture: Get the latest version of rapture"
+    shell: curl -s https://api.github.com/repos/daveadams/go-rapture/releases/latest | grep 'tag_name' | cut -d\" -f4 | cut -c 2-
+    args:
+      warn: False
+    register: latest_rapture_version
+    changed_when: false
+  - name: "rapture: download"
+    get_url: url=https://github.com/daveadams/go-rapture/releases/download/v{{ latest_rapture_version.stdout }}/rapture-darwin-amd64 dest=~/.bin/rapture mode=0755
+  - name: "rapture: add to .zshrc"
+    lineinfile:
+      dest: ~/.zshrc
+      regexp: 'rapture'
+      line: '[[ -s "$HOME/.bin/rapture" ]] && eval "$( command rapture shell-init )"'
+      state: present
+
+- name: Install SDKMAN
+  block:
+  - name: "sdkman: verify if SDKMAN Is Installed"
+    stat:
+      path: "~/.sdkman/"
+    register: "sdkman_installed"
+
+  - name: "sdkman: install"
+    shell: 'curl -s http://get.sdkman.io | bash'
+    args:
+      executable: /bin/bash
+      warn: no
+    when: not sdkman_installed.stat.exists
+
+  - name: "sdkman: add to .zshrc"
+    lineinfile:
+      dest: ~/.zshrc
+      regexp: 'sdkman-init.sh'
+      line: '[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"'
+      state: present
+  - name: "sdkman: link dotfiles"
+    file:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      state: link
+      force: yes
+    loop:
+      - { src: "~/dotfiles/sdkman", dest: "~/.sdkman/etc/config"}      
+
+## Configure tools tools
+# - name: Setup git delta
+#   git_config:
+#     name: "{{ item.name }}"
+#     scope: global
+#     value: "{{ item.value }}"
+#   loop:
+#     - { name: "core.pager", value: "delta" }
+#     - { name: "interactive.diffFilter", value: "delta --color-only" }
+#     - { name: "delta.features", value: "side-by-side line-numbers decorations" }
+#     - { name: "delta.whitespace-error-style", value: "22 reverse" }
+#     - { name: "delta.decorations.commit-decoration-style", value: "bold yellow box ul" }
+#     - { name: "delta.decorations.file-style", value: "bold yellow ul" }
+#     - { name: "delta.decorations.file-decoration-style", value: "none" }
