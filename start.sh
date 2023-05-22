@@ -37,21 +37,6 @@ if [ -t 1 ]; then
     RESET=$(printf '\033[m')
 fi
 
-if ! command -v git &> /dev/null;
-    then
-        installing "git" && sudo apt -y update && sudo apt -y install git
-    else
-        ok "git"
-fi
-
-[[ "$1" = "--local" ]] && echo "Using local copy" || generate_temp_dir
-
-for arg do
-  shift
-  [ "$arg" = "--local" ] && continue
-  set -- "$@" "$arg"
-done
-
 if [[ $(/usr/bin/gcc 2>&1) =~ "no developer tools were found" ]] || [[ ! -x /usr/bin/gcc ]];
     then
         installing "xcode"
@@ -59,6 +44,8 @@ if [[ $(/usr/bin/gcc 2>&1) =~ "no developer tools were found" ]] || [[ ! -x /usr
     else
         ok "xcode"
 fi
+
+[[ "$1" = "--local" ]] && echo "Using local copy" || generate_temp_dir
 
 if [[ ! -x /usr/local/bin/ansible ]];
     then
