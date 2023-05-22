@@ -45,16 +45,16 @@ if [[ $(/usr/bin/gcc 2>&1) =~ "no developer tools were found" ]] || [[ ! -x /usr
         ok "xcode"
 fi
 
-[[ "$1" = "--local" ]] && echo "Using local copy" || generate_temp_dir
-
-if [[ ! -x /usr/local/bin/ansible ]];
+if [[ ! -x /opt/Homebrew/bin ]];
     then
-        installing "ansible"
-        brew update
-        brew install ansible
+        installing "homebrew"
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"        
     else
-        ok "ansible"
+        ok "homebrew"
 fi
+
+
+[[ "$1" = "--local" ]] && echo "Using local copy" || generate_temp_dir
 
 export PATH=/usr/local/bin:$PATH
 
