@@ -2,8 +2,8 @@
   lineinfile:
     backup: yes
     dest: /etc/shells
-    regexp: ^/usr/local/bin/zsh
-    line: /usr/local/bin/zsh
+    regexp: ^/bin/zsh
+    line: /bin/zsh
   become: true
 
 - name: Setup oh-my-zsh
@@ -14,25 +14,23 @@
     register: "ohmyzsh_installed"
 
   - name: Install oh-my-zsh
-    shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-    args:
-      executable: /bin/bash
-      warn: no
+    shell: bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     when: not ohmyzsh_installed.stat.exists
 
   - name: Default to zsh
     user:
       name: "{{ ansible_env.USER }}"
-      shell: /usr/bin/zsh
+      shell: /bin/zsh
     become: true
 
 - name: dotfiles folder
   block:
   - name: "[dotfiles] download configs"
     git:  
-      repo: "https://github.com/kubamarchwicki/dotfiles.gif"
+      repo: "git@github.com:kubamarchwicki/dotfiles.git"
       dest: "{{ ansible_env.HOME }}/dotfiles"
-      update: no  
+      update: yes
+      clone: yes
   - name: "[dotfiles] links"
     file:
       src: "{{ item.src }}"
