@@ -8,14 +8,25 @@
     state: present
   loop: 
     - curl
-    - pass
-    - pinentry-mac #prompts you for your passphrase
     - bat
     - youtube-dl
-    # - pdftk
 
-- name: "passff-host for firefox"
-  shell: curl -sSL github.com/passff/passff-host/releases/latest/download/install_host_app.sh | bash -s -- firefox    
+- name: Setup password-store
+  block:
+  - name: "[pass] install pass package"
+    homebrew:
+      name: "{{ item.name | default(item) }}"
+      state: present
+    loop:
+      - pass
+      - pinentry-mac #prompts you for your passphrase
+  - name: "[pass] passff-host for firefox"
+    shell: curl -sSL github.com/passff/passff-host/releases/latest/download/install_host_app.sh | bash -s -- firefox    
+  - name: "[pass] gnupg agent setup"
+    copy:
+      dest: "~/.gnupg/gpg-agent.conf"
+      content: |
+        pinentry-program /opt/homebrew/bin/pinentry-mac
 
 - name: Refreshing sudo Cache
   command: "echo none"
