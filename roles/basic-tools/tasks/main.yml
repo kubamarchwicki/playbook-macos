@@ -52,7 +52,7 @@
     - brew doctor
 
 - name: Install fonts
-  include: fonts-setup.yml
+  import_tasks: fonts-setup.yml
 
 - name: Setup mac properties
-  include: macos-setup.yml
+  import_tasks: macos-setup.yml
