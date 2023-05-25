@@ -13,6 +13,7 @@
   loop: 
     - awscli
     - vault
+    - vaulted
     - direnv
     - docker
     - docker-compose
@@ -37,6 +38,8 @@
   loop: 
     - jetbrains-toolbox
     - visual-studio-code
+  notify:
+    - brew doctor
 
 # Easy assume role for AWS
 - name: "Install rapture"
@@ -80,17 +83,17 @@
     loop:
       - { src: "~/dotfiles/sdkman", dest: "~/.sdkman/etc/config"}      
 
-## Configure tools tools
-# - name: Setup git delta
-#   git_config:
-#     name: "{{ item.name }}"
-#     scope: global
-#     value: "{{ item.value }}"
-#   loop:
-#     - { name: "core.pager", value: "delta" }
-#     - { name: "interactive.diffFilter", value: "delta --color-only" }
-#     - { name: "delta.features", value: "side-by-side line-numbers decorations" }
-#     - { name: "delta.whitespace-error-style", value: "22 reverse" }
-#     - { name: "delta.decorations.commit-decoration-style", value: "bold yellow box ul" }
-#     - { name: "delta.decorations.file-style", value: "bold yellow ul" }
-#     - { name: "delta.decorations.file-decoration-style", value: "none" }
+- name: Setup git and delta
+  git_config:
+    name: "{{ item.name }}"
+    scope: global
+    value: "{{ item.value }}"
+  loop:
+    - { name: "pager.branch", value: "false" }
+    - { name: "core.pager", value: "delta" }
+    - { name: "interactive.diffFilter", value: "delta --color-only" }
+    - { name: "delta.features", value: "side-by-side line-numbers decorations" }
+    - { name: "delta.whitespace-error-style", value: "22 reverse" }
+    - { name: "delta.decorations.commit-decoration-style", value: "bold yellow box ul" }
+    - { name: "delta.decorations.file-style", value: "bold yellow ul" }
+    - { name: "delta.decorations.file-decoration-style", value: "none" }

@@ -8,6 +8,7 @@
     state: present
   loop: 
     - curl
+    - wget
     - bat
     - youtube-dl
 
@@ -47,48 +48,11 @@
     - gimp
     - signal
     - dropbox
+  notify:
+    - brew doctor
 
-- name: Install Inconsolata font
-  block:
-  - name: "Inconsolata: get the latest version"
-    shell: curl -s https://api.github.com/repos/googlefonts/Inconsolata/releases/latest | grep 'tag_name' | cut -d\" -f4
-    register: latest_inconsolata_version
-    changed_when: false
-  - name: "Inconsolata: create ~/Library/Fonts/ subdirectory"
-    file:
-      path: ~/Library/Fonts/Inconsolata
-      state: directory    
-  - name: "Inconsolata: copy font"
-    unarchive:
-      src: https://github.com/googlefonts/Inconsolata/releases/download/{{ latest_inconsolata_version.stdout }}/fonts_ttf.zip
-      dest: ~/Library/Fonts/Inconsolata
-      remote_src: yes
+- name: Install fonts
+  include: fonts-setup.yml
 
-- name: Install Firacode font
-  block:
-  - name: Create ~/Library/Fonts/ subdirectory
-    file:
-      path: ~/Library/Fonts/FiraCode
-      state: directory    
-  - name: "Firacode: Create a temporary directory"
-    tempfile:
-      state: directory
-    changed_when: False
-    register: font_dowload_tempdir
-  - name: "Firacode: get the latest version"
-    shell: curl -s https://api.github.com/repos/tonsky/FiraCode/releases/latest | grep 'tag_name' | cut -d\" -f4
-    register: latest_firacode_version 
-    changed_when: false
-  - name: "FiraCode: download the font archive to the temporary directory"
-    get_url:
-      url: https://github.com/tonsky/FiraCode/releases/download/{{ latest_firacode_version.stdout }}/Fira_Code_v{{ latest_firacode_version.stdout }}.zip
-      dest: '{{ font_dowload_tempdir.path }}/firacode.zip'
-    changed_when: False
-  - name: "FiraCode: install font"
-    shell: 'unzip -jo "{{ font_dowload_tempdir.path }}/firacode.zip" ttf/* -d ~/Library/Fonts/FiraCode'
-  always:
-    - name: "FiraCode: clean up the temporary download directory"
-      file:
-        path: '{{ font_dowload_tempdir.path }}'
-        state: absent
-      changed_when: False
+- name: Setup mac properties
+  include: macos-setup.yml
