@@ -49,3 +49,5 @@
       - { src: "~/dotfiles/zsh/zshrc_helpers", dest: "~/.zshrc_helpers"}
       - { src: "~/dotfiles/zsh/docker_aliases", dest: "~/.docker_aliases"}
       - { src: "~/dotfiles/zsh/zshrc", dest: "~/.zshrc"}
+      - { src: "~/dotfiles/macos/yabairc", dest: "~/.yabairc"}
+      - { src: "~/dotfiles/macos/skhdrc", dest: "~/.skhdrc"}

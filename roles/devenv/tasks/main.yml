@@ -27,6 +27,12 @@
     - kubernetes-cli
     - helm
     - k9s
+    - terraform
+    - terragrunt
+    - jsonnet
+    - go@1.19
+    - aws-sam-cli
+    - circleci
 
 - name: Installing [dev] Homebrew Cask Packages
   homebrew_cask:
@@ -38,6 +44,8 @@
   loop: 
     - jetbrains-toolbox
     - visual-studio-code
+    - kitty
+    - docker
   notify:
     - brew doctor
 
@@ -53,7 +61,7 @@
   - name: "rapture: add to .zshrc"
     lineinfile:
       dest: ~/.zshrc
-      regexp: 'rapture'
+      regexp: 'command rapture shell-init'
       line: '[[ -s "$HOME/.bin/rapture" ]] && eval "$( command rapture shell-init )"'
       state: present
 

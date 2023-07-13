@@ -23,3 +23,7 @@
 - name: brew doctor
   command: brew doctor
   changed_when: false
+
+- name: Restart yabai
+  command: $(which brew) services restart yabai
+  ignore_errors: yes

@@ -2,6 +2,16 @@
   homebrew:
     update_homebrew: true
 
+- name: Homebrew autoupdate
+  block:
+    - name: Homebrew autoupdate - install
+      homebrew_tap:
+        name: homebrew/autoupdate
+        state: present
+    - name: Homebrew autoupdate - configure
+      shell: brew autoupdate start --upgrade --enable-notification
+      ignore_errors: true
+
 - name: Installing Homebrew Packages
   homebrew:
     name: "{{ item.name | default(item) }}"
@@ -48,6 +58,7 @@
     - gimp
     - signal
     - dropbox
+    - iterm2
   notify:
     - brew doctor
 
