@@ -51,3 +51,4 @@
       - { src: "~/dotfiles/zsh/zshrc", dest: "~/.zshrc"}
       - { src: "~/dotfiles/macos/yabairc", dest: "~/.yabairc"}
       - { src: "~/dotfiles/macos/skhdrc", dest: "~/.skhdrc"}
+      - { src: "~/dotfiles/macos/karabiner", dest: "~/.config"}
