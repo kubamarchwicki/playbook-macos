@@ -27,12 +27,13 @@
     - kubernetes-cli
     - helm
     - k9s
-    - terraform
-    - terragrunt
     - jsonnet
     - go@1.19
     - aws-sam-cli
     - circleci
+    - tfenv
+    - warrensbox/tap/tgswitch
+    - python3
 
 - name: Installing [dev] Homebrew Cask Packages
   homebrew_cask:

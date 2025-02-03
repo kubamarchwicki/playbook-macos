@@ -59,6 +59,8 @@
     - signal
     - dropbox
     - iterm2
+    - flycut
+    - google-chrome
   notify:
     - brew doctor
 
