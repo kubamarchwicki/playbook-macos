@@ -9,7 +9,7 @@
         name: homebrew/autoupdate
         state: present
     - name: Homebrew autoupdate - configure
-      shell: brew autoupdate start --upgrade --enable-notification
+      shell: /opt/homebrew/bin/brew autoupdate start --upgrade --enable-notification
       ignore_errors: true
 
 - name: Installing Homebrew Packages
