@@ -8,8 +8,14 @@
       homebrew_tap:
         name: homebrew/autoupdate
         state: present
+    - name: Create /LaunchAgents folder
+      ansible.builtin.file:
+        path: "/Users/{{ ansible_user_id }}/Library/LaunchAgents/"
+        state: directory
+        owner: "{{ ansible_user_id }}"
+        mode: 0755
     - name: Homebrew autoupdate - configure
-      shell: /opt/homebrew/bin/brew autoupdate start --upgrade --enable-notification
+      shell: /opt/homebrew/bin/brew autoupdate start --upgrade
       ignore_errors: true
 
 - name: Installing Homebrew Packages
@@ -20,7 +26,6 @@
     - curl
     - wget
     - bat
-    - youtube-dl
 
 - name: Setup password-store
   block:
@@ -37,7 +42,7 @@
     copy:
       dest: "~/.gnupg/gpg-agent.conf"
       content: |
-        pinentry-program /opt/homebrew/bin/pinentry-mac
+        pinentry /opt/homebrew/bin/pinentry-mac
 
 - name: Refreshing sudo Cache
   command: "echo none"
@@ -56,7 +61,6 @@
     - firefox
     - simplenote
     - gimp
-    - signal
     - dropbox
     - iterm2
     - flycut

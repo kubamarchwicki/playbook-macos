@@ -1,5 +1,9 @@
 - name: Installing MacOS-I3 Packages
   block:
+    - name: Tap koekeishiya/formulae
+      homebrew_tap:
+        name: koekeishiya/formulae
+        state: present
     - name: Install packages
       homebrew:
         name: "{{ item.name | default(item) }}"
@@ -14,44 +18,34 @@
       command: yabai --start-service
     - name: Start skhd 
       command: skhd --start-service
-    - name: Start spacerbar
-      command: |
-        /opt/homebrew/bin/brew services start spacebar
-
-- name: Set Dock Settings
-  osx_defaults: domain=com.apple.dock key={{ item.key }} type={{ item.type }} value={{ item.value }}
-  with_items:
-    - { key: "mouse-over-hilite-stack", type: "bool", value: "true" }
-    - { key: "tilesize", type: "float", value: "25" }
-    - { key: "autohide", type: "bool", value: "true" }
-    - { key: "show-process-indicators", type: "bool", value: "true" }
-    - { key: "expose-animation-duration", type: "float", value: "0.1" }
-    - { key: "show-recents", type: "bool", value: "false" }
-    - { key: "dashboard-in-overlay", type: "bool", value: "false" }
-  notify:
-    - Kill Dock
 
 - name: Install mac tools
   homebrew:
     name: "{{ item.name | default(item) }}"
     state: present
   loop:
+    - dockutil
     - m-cli
 
-# - name: Remove Unused Dock Items
-#   shell: dockutil --remove '{{ item }}'
-#   ignore_errors: true
-#   with_items: 
-#     - Contacts
-#     - Notes
-#     - Reminders
-#     - Maps
-#     - Photos
-#     - FaceTime
-#     - iTunes
-#     - iBooks
-#     - App Store
-#     - Siri
+- name: Remove Unused Dock Items
+  shell: dockutil --remove '{{ item }}'
+  ignore_errors: true
+  with_items: 
+    - Launchpad
+    - Safari
+    - Mail
+    - Contacts
+    - Calendar
+    - Freeform
+    - TV
+    - Music
+    - Notes
+    - Reminders
+    - Maps
+    - Photos
+    - FaceTime
+    - iBooks
+    - App Store
 
 - name: Set Global Settings
   osx_defaults: domain=NSGlobalDomain key={{ item.key }} type={{ item.type }} value={{ item.value }}
@@ -61,8 +55,30 @@
   notify:
     - Restart yabai
 
+- name: Set Dock Settings
+  osx_defaults: 
+    domain: com.apple.dock
+    key: "{{ item.key }}"
+    type: "{{ item.type }}" 
+    value: "{{ item.value }}"
+    state: present
+  with_items:
+    - { key: "orientation", type: "string", value: "bottom" }
+    - { key: "autohide", type: "bool", value: "false" }
+    - { key: "autohide-immutable", type: "bool", value: "true" }
+    - { key: "show-recents", type: "bool", value: "false" }
+    - { key: "tilesize", type: "float", value: "32" }
+    - { key: "largesize", type: "float", value: "48" }
+  notify:
+    - Kill Dock
+
 - name: Set Finder Settings
-  osx_defaults: domain=com.apple.finder key={{ item.key }} type={{ item.type }} value={{ item.value }}
+  osx_defaults: 
+    domain: com.apple.finder
+    key: "{{ item.key }}" 
+    type: "{{ item.type }}" 
+    value: "{{ item.value }}"
+    state: present
   with_items:
     - { key: "ShowStatusBar", type: "bool", value: "true" }
     - { key: "ShowPathbar", type: "bool", value: "true" }

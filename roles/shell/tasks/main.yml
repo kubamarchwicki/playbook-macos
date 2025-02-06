@@ -17,6 +17,18 @@
     shell: bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     when: not ohmyzsh_installed.stat.exists
 
+  - name: Install additional oh-my-zsh packages
+    block:
+    - name: "[dotfiles] download configs"
+      git:  
+        repo: "{{ item.name | default(item) }}"
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/{{ item.dest }}"
+        update: yes
+        clone: yes
+      loop: 
+        - { name: "https://github.com/zsh-users/zsh-autosuggestions", dest: "zsh-autosuggestions" }
+        - { name: "https://github.com/zsh-users/zsh-completions", dest: "zsh-completions" }
+        
   - name: Default to zsh
     user:
       name: "{{ ansible_env.USER }}"

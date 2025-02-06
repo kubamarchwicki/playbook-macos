@@ -12,8 +12,6 @@
     state: present
   loop: 
     - awscli
-    - vault
-    - vaulted
     - direnv
     - docker
     - docker-compose
@@ -28,11 +26,9 @@
     - helm
     - k9s
     - jsonnet
-    - go@1.19
     - aws-sam-cli
     - circleci
     - tfenv
-    - warrensbox/tap/tgswitch
     - python3
 
 - name: Installing [dev] Homebrew Cask Packages
@@ -43,28 +39,10 @@
     accept_external_apps: yes
   ignore_errors: true
   loop: 
-    - jetbrains-toolbox
     - visual-studio-code
-    - kitty
     - docker
   notify:
     - brew doctor
-
-# Easy assume role for AWS
-- name: "Install rapture"
-  block:
-  - name: "rapture: Get the latest version of rapture"
-    shell: curl -s https://api.github.com/repos/daveadams/go-rapture/releases/latest | grep 'tag_name' | cut -d\" -f4 | cut -c 2-
-    register: latest_rapture_version
-    changed_when: false
-  - name: "rapture: download"
-    get_url: url=https://github.com/daveadams/go-rapture/releases/download/v{{ latest_rapture_version.stdout }}/rapture-darwin-amd64 dest=~/.bin/rapture mode=0755
-  - name: "rapture: add to .zshrc"
-    lineinfile:
-      dest: ~/.zshrc
-      regexp: 'command rapture shell-init'
-      line: '[[ -s "$HOME/.bin/rapture" ]] && eval "$( command rapture shell-init )"'
-      state: present
 
 - name: Install SDKMAN
   block:
