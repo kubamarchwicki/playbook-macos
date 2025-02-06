@@ -57,8 +57,8 @@ fi
 if [[ ! -x /opt/Homebrew/bin ]];
     then
         installing "homebrew"
-        /opt/Homebrew/bin/brew update
-        /opt/Homebrew/bin/brew install ansible
+        /opt/homebrew/bin/brew update
+        /opt/homebrew/bin/brew install ansible
     else
         ok "ansible"
 fi
@@ -68,4 +68,4 @@ fi
 
 export PATH=/usr/local/bin:$PATH
 
-cd "$TARGET" && ansible-playbook playbook.yml -K 
+cd "$TARGET" && /opt/homebrew/bin/ansible-playbook playbook.yml -K 
