@@ -26,6 +26,13 @@
   loop:
     - dockutil
     - m-cli
+    - mas
+
+- name: Install AppStore applications
+  shell: "mas install {{ item.id }}"
+  with_items:
+    - { id: 409201541, name: "Pages" }
+    - { id: 409203825, name: "Numbers" }
 
 - name: Remove Unused Dock Items
   shell: dockutil --remove '{{ item }}'

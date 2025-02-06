@@ -62,6 +62,8 @@
     - simplenote
     - gimp
     - dropbox
+    - google-drive
+    - google-cloud-sdk
     - iterm2
     - flycut
     - google-chrome
