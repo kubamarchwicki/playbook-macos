@@ -66,6 +66,6 @@ fi
 
 [[ "$1" = "--local" ]] && echo "Using local copy" || generate_temp_dir
 
-export PATH=/usr/local/bin:$PATH
+export PATH=/opt/homebrew/bin/:/usr/local/bin:$PATH
 
 cd "$TARGET" && /opt/homebrew/bin/ansible-playbook playbook.yml -K 
