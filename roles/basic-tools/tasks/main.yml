@@ -42,7 +42,9 @@
     copy:
       dest: "~/.gnupg/gpg-agent.conf"
       content: |
-        pinentry /opt/homebrew/bin/pinentry-mac
+        pinentry-program /opt/homebrew/bin/pinentry-mac
+
+# https://stackoverflow.com/a/55646482 - ssh and gpg in a single configuration
 
 - name: Refreshing sudo Cache
   command: "echo none"
@@ -65,7 +67,7 @@
     - google-drive
     - google-cloud-sdk
     - iterm2
-    - flycut
+    - maccy
     - google-chrome
   notify:
     - brew doctor

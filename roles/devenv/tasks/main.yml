@@ -7,29 +7,39 @@
     - { path: "~/.bin" }
 
 - name: Installing [dev] Homebrew Packages
-  homebrew:
-    name: "{{ item.name | default(item) }}"
-    state: present
-  loop: 
-    - awscli
-    - direnv
-    - docker
-    - docker-compose
-    - git
-    - htop
-    - jenv
-    - jq
-    - yq
-    - make
-    - git-delta
-    - kubernetes-cli
-    - helm
-    - k9s
-    - jsonnet
-    - aws-sam-cli
-    - circleci
-    - tfenv
-    - python3
+  block:
+  - name: Installing [dev] Homebrew tap
+    homebrew_tap:
+      name: "{{ item }}"
+      state: present
+    with_items: 
+      - common-fate/granted
+  - name: Installing [dev] Homebrew Packages
+    homebrew:
+      name: "{{ item.name | default(item) }}"
+      state: present
+    loop: 
+      - awscli
+      - direnv
+      - docker
+      - docker-compose
+      - git
+      - htop
+      - jenv
+      - jq
+      - yq
+      - make
+      - git-delta
+      - kubernetes-cli
+      - helm
+      - k9s
+      - jsonnet
+      - aws-sam-cli
+      - circleci
+      - tfenv
+      - python3
+    #   - granted
+      - terragrunt
 
 - name: Installing [dev] Homebrew Cask Packages
   homebrew_cask:

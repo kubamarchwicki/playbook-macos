@@ -61,6 +61,6 @@
       - { src: "~/dotfiles/zsh/zshrc_helpers", dest: "~/.zshrc_helpers"}
       - { src: "~/dotfiles/zsh/docker_aliases", dest: "~/.docker_aliases"}
       - { src: "~/dotfiles/zsh/zshrc", dest: "~/.zshrc"}
-      - { src: "~/dotfiles/macos/yabairc", dest: "~/.config/yabai/yabairc"}
-      - { src: "~/dotfiles/macos/skhdrc", dest: "~/.config/skhd/skhdrc"}
-      - { src: "~/dotfiles/macos/karabiner", dest: "~/.config"}
+      - { src: "~/dotfiles/macos/yabai", dest: "~/.config/yabai"}
+      - { src: "~/dotfiles/macos/skhd", dest: "~/.config/skhd"}
+      - { src: "~/dotfiles/macos/karabiner", dest: "~/.config/karabiner"}
