@@ -30,6 +30,7 @@
 
 - name: Install AppStore applications
   shell: "mas install {{ item.id }}"
+  ignore_errors: true
   with_items:
     - { id: 409201541, name: "Pages" }
     - { id: 409203825, name: "Numbers" }
