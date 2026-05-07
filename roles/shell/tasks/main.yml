@@ -22,7 +22,7 @@
     - name: "[dotfiles] download configs"
       git:  
         repo: "{{ item.name | default(item) }}"
-        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/{{ item.dest }}"
+        dest: "{{ ansible_facts.env.HOME }}/.oh-my-zsh/custom/plugins/{{ item.dest }}"
         update: yes
         clone: yes
       loop: 
@@ -31,7 +31,7 @@
         
   - name: Default to zsh
     user:
-      name: "{{ ansible_env.USER }}"
+      name: "{{ ansible_facts.env.USER }}"
       shell: /bin/zsh
     become: true
 
@@ -39,15 +39,20 @@
   block:
   - name: "[dotfiles] exists"
     stat: 
-      path: "{{ ansible_env.HOME }}/dotfiles"
+      path: "{{   ansible_facts.env.HOME }}/dotfiles"
     register: dotfiles_exists
   - name: "[dotfiles] download configs"
     git:  
       repo: "git@github.com:kubamarchwicki/dotfiles.git"
-      dest: "{{ ansible_env.HOME }}/dotfiles"
+      dest: "{{ ansible_facts.env.HOME }}/dotfiles"
       update: yes
       clone: yes
     when: not dotfiles_exists.stat.exists
+  - name: "[dotfiles] create local .config folder"
+    file:
+      path: "~/.config"
+      state: directory
+      mode: 0775
   - name: "[dotfiles] links"
     file:
       src: "{{ item.src }}"

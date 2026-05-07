@@ -50,9 +50,21 @@
   ignore_errors: true
   loop: 
     - visual-studio-code
-    - docker
   notify:
     - brew doctor
+
+- name: Installing [dev] Homebrew Cask root packages
+  homebrew_cask:
+    name: "{{ item.name | default(item) }}"
+    state: present
+    options: "{{ item.install_options | default(omit) }}"
+    sudo_password: "{{ ansible_become_password }}"
+    accept_external_apps: yes
+  ignore_errors: true
+  loop: 
+    - docker
+  notify:
+    - brew doctor    
 
 - name: Install SDKMAN
   block:
