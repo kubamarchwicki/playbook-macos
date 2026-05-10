@@ -72,6 +72,8 @@
     - iterm2
     - maccy
     - google-chrome
+    - affinity
+    - foobar2000
   notify:
     - brew doctor
 

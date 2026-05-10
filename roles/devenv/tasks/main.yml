@@ -38,7 +38,7 @@
       - circleci
       - tfenv
       - python3
-    #   - granted
+      - gh
       - terragrunt
 
 - name: Installing [dev] Homebrew Cask Packages
