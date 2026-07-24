@@ -26,6 +26,9 @@
     - curl
     - wget
     - bat
+    - poppler #pdftotext
+    - pdftk-java
+    - ffmpeg
 
 - name: Setup password-store
   block:

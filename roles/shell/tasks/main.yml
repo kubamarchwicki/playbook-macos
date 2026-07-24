@@ -64,6 +64,7 @@
       - { src: "~/dotfiles/git/gitignore_global", dest: "~/.gitignore_global"}
       - { src: "~/dotfiles/zsh/zshrc_aliases", dest: "~/.zshrc_aliases"}
       - { src: "~/dotfiles/zsh/zshrc_helpers", dest: "~/.zshrc_helpers"}
+      - { src: "~/dotfiles/zsh/zshrc_aitools", dest: "~/.zshrc_aitools"}
       - { src: "~/dotfiles/zsh/docker_aliases", dest: "~/.docker_aliases"}
       - { src: "~/dotfiles/zsh/zshrc", dest: "~/.zshrc"}
       - { src: "~/dotfiles/macos/yabai", dest: "~/.config/yabai"}
